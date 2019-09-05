@@ -1,5 +1,6 @@
 #include "funciones.h"
 #include <iostream>
+#include <iomanip>	// para funcion de seteo de precision
 #include <cstdlib>	// para convertir string a numerico.
 using namespace std;
 
@@ -36,7 +37,7 @@ void darLaBienvenida() {
 void procesarArchivo(string cabeceras[], Metrobus registros[]) {
 	ifstream archivo;
 
-	string ruta = "estaciones-de-metrobus.csv";
+	string ruta = "src/estaciones-de-metrobus.csv";
 
 	archivo.open(ruta.c_str());
 
@@ -93,7 +94,7 @@ Metrobus armarRegistroLeido(ifstream &archivo) {
 
 	std::string id = "";
 	std::getline(archivo, id, ',');
-	nuevoRegistro.identificador = std::atoi(latitud.c_str());
+	nuevoRegistro.identificador = std::atoi(id.c_str());
 
 	std::string nombre = "";
 	std::getline(archivo, nombre, ',');
@@ -153,11 +154,11 @@ void usarMenuDelPrograma(string cabeceras[], Metrobus registros[]) {
 void mostrarMenu() {
 	cout << "<<< MENU DEL PROGRAMA. >>>" << endl << endl;
 
-	cout << "1. Filtrar por longitud." << endl;
+	cout << "1. Filtrar por LONGITUD." << endl;
 
-	cout << "2. Filtrar por latitud." << endl;
+	cout << "2. Filtrar por LATITUD." << endl;
 
-	cout << "3. Filtrar por id." << endl;
+	cout << "3. Filtrar por ID." << endl;
 
 	cout << "4. Salir." << endl << endl;
 }
@@ -169,7 +170,7 @@ int elegirUnaOpcionDelMenu() {
 
 	do {
 
-		cout << "Escoga una de las opciones disponibles: ";
+		cout << "Ingrese el número de la opcion que desea realizar: ";
 
 		cin >> eleccion;
 
@@ -216,9 +217,9 @@ void elegirRangoDeFiltradoPorLongitud(double &filtrarDesde, double &filtrarHasta
 
 		cout << endl;
 
-		cout << "Escoga DESDE que numero quiere filtrar por LONGITUD." << endl;
+		cout << "Ingrese DESDE que número quiere filtrar por LONGITUD." << endl;
 
-		cout << "Los valores permitidos van desde " << LONGITUD_MINIMA_ACEPTADA << " hasta " << LONGITUD_MAXIMA_ACEPTADA << " :";
+		cout << "Los valores DECIMALES permitidos van desde " << LONGITUD_MINIMA_ACEPTADA << " hasta " << LONGITUD_MAXIMA_ACEPTADA << ": ";
 
 		cin >> filtrarDesde;
 
@@ -226,9 +227,13 @@ void elegirRangoDeFiltradoPorLongitud(double &filtrarDesde, double &filtrarHasta
 			cout << endl;
 
 			cout << "El dato ingresado es inválido. Inténtelo de nuevo." << endl;
+		} else {
+			cout << endl;
+
+			cout << "El dato ingresado es válido." << endl;
 		}
 
-		eleccionValida = (filtrarDesde > LONGITUD_MINIMA_ACEPTADA) && (filtrarDesde <= LONGITUD_MAXIMA_ACEPTADA);
+		eleccionValida = (filtrarDesde >= LONGITUD_MINIMA_ACEPTADA) && (filtrarDesde <= LONGITUD_MAXIMA_ACEPTADA);
 
 	} while(!eleccionValida);
 
@@ -238,9 +243,9 @@ void elegirRangoDeFiltradoPorLongitud(double &filtrarDesde, double &filtrarHasta
 
 		cout << endl;
 
-		cout << "Escoga HASTA que numero quiere filtrar por LONGITUD." << endl;
+		cout << "Ingrese HASTA que número quiere filtrar por LONGITUD." << endl;
 
-		cout << "Los valores permitidos van desde " << filtrarDesde << " hasta " << LONGITUD_MAXIMA_ACEPTADA << " :";
+		cout << "Los valores DECIMALES permitidos van desde " << filtrarDesde << " hasta " << LONGITUD_MAXIMA_ACEPTADA << ": ";
 
 		cin >> filtrarHasta;
 
@@ -250,7 +255,7 @@ void elegirRangoDeFiltradoPorLongitud(double &filtrarDesde, double &filtrarHasta
 			cout << "El dato ingresado es inválido. Inténtelo de nuevo." << endl;
 		}
 
-		eleccionValida = (filtrarHasta > filtrarDesde) && (filtrarHasta <= LONGITUD_MAXIMA_ACEPTADA);
+		eleccionValida = (filtrarHasta >= filtrarDesde) && (filtrarHasta <= LONGITUD_MAXIMA_ACEPTADA);
 
 	} while(!eleccionValida);
 }
@@ -276,35 +281,35 @@ void filtrarRegistrosPorLongitud(string cabeceras[], Metrobus registros[], doubl
 		}
 	}
 
-	cout << ">>> La cantidad de registros que cumplen con lo pedido es de " << cantidadDeRegistrosValidos << "." << endl;
+	cout << ">>> La cantidad de registros que cumplen con lo pedido es de " << cantidadDeRegistrosValidos << "." << endl << endl;
 
 	cout << "*************************************************" << endl << endl;
 }
 
 void mostrarDatosDelRegistro(Metrobus registroCandidato) {
-	cout << "~ID: " << registroCandidato.identificador << " ." << endl;
+	cout << "~ID: " << registroCandidato.identificador << endl;
 
-	cout << "~Nombre: " << registroCandidato.nombre << " ." << endl;
+	cout << "~Nombre: " << registroCandidato.nombre << endl;
 
-	cout << "~Longitud: " << registroCandidato.longitud << " ." << endl;
+	cout << "~Longitud: " << setprecision(15) << registroCandidato.longitud << endl;
 
-	cout << "~Latitud: " << registroCandidato.latitud << " ." << endl;
+	cout << "~Latitud: " << setprecision(15) << registroCandidato.latitud << endl;
 
-	cout << "~Calle 1: " << registroCandidato.calle1 << " ." << endl;
+	cout << "~Calle 1: " << registroCandidato.calle1 << endl;
 
-	cout << "~Calle 2: " << registroCandidato.calle2 << " ." << endl;
+	cout << "~Calle 2: " << registroCandidato.calle2 << endl;
 
-	cout << "~Interseccion: " << registroCandidato.interseccion << " ." << endl;
+	cout << "~Interseccion: " << registroCandidato.interseccion << endl;
 
-	cout << "~Linea sentido norte: " << registroCandidato.lineaSentidoNorte << " ." << endl;
+	cout << "~Linea sentido norte: " << registroCandidato.lineaSentidoNorte << endl;
 
-	cout << "~Linea sentido sur: " << registroCandidato.lineaSentidoSur << " ." << endl;
+	cout << "~Linea sentido sur: " << registroCandidato.lineaSentidoSur << endl;
 
-	cout << "~Metrobus: " << registroCandidato.metrobus << " ." << endl;
+	cout << "~Metrobus: " << registroCandidato.metrobus << endl;
 
-	cout << "~Nombre sentido: " << registroCandidato.nombreSentido << " ." << endl;
+	cout << "~Nombre sentido: " << registroCandidato.nombreSentido << endl;
 
-	cout << "~Observacion: " << registroCandidato.observacion << " ." << endl << endl;
+	cout << "~Observacion: " << registroCandidato.observacion << endl << endl;
 }
 
 void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta) {
@@ -312,9 +317,11 @@ void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta)
 
 	do {
 
-		cout << "Escoga DESDE que numero quiere filtrar por LATITUD." << endl;
+		cout << endl;
 
-		cout << "Los valores permitidos van desde " << LATITUD_MINIMA_ACEPTADA << " hasta " << LATITUD_MAXIMA_ACEPTADA << " :";
+		cout << "Ingrese DESDE que número quiere filtrar por LATITUD." << endl;
+
+		cout << "Los valores DECIMALES permitidos van desde " << LATITUD_MINIMA_ACEPTADA << " hasta " << LATITUD_MAXIMA_ACEPTADA << ": ";
 
 		cin >> filtrarDesde;
 
@@ -322,9 +329,13 @@ void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta)
 			cout << endl;
 
 			cout << "El dato ingresado es inválido. Inténtelo de nuevo." << endl;
+		}  else {
+			cout << endl;
+
+			cout << "El dato ingresado es válido." << endl;
 		}
 
-		eleccionValida = (filtrarDesde > LATITUD_MINIMA_ACEPTADA) && (filtrarDesde <= LATITUD_MAXIMA_ACEPTADA);
+		eleccionValida = (filtrarDesde >= LATITUD_MINIMA_ACEPTADA) && (filtrarDesde <= LATITUD_MAXIMA_ACEPTADA);
 
 	} while(!eleccionValida);
 
@@ -332,9 +343,11 @@ void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta)
 
 	do {
 
-		cout << "Escoga HASTA que numero quiere filtrar por LATITUD." << endl;
+		cout << endl;
 
-		cout << "Los valores permitidos van desde " << filtrarDesde << " hasta " << LATITUD_MAXIMA_ACEPTADA << " :";
+		cout << "Ingrese HASTA que número quiere filtrar por LATITUD." << endl;
+
+		cout << "Los valores DECIMALES permitidos van desde " << filtrarDesde << " hasta " << LATITUD_MAXIMA_ACEPTADA << ": ";
 
 		cin >> filtrarHasta;
 
@@ -344,13 +357,15 @@ void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta)
 			cout << "El dato ingresado es inválido. Inténtelo de nuevo." << endl;
 		}
 
-		eleccionValida = (filtrarHasta > filtrarDesde) && (filtrarHasta <= LATITUD_MAXIMA_ACEPTADA);
+		eleccionValida = (filtrarHasta >= filtrarDesde) && (filtrarHasta <= LATITUD_MAXIMA_ACEPTADA);
 
 	} while(!eleccionValida);
 }
 
 void filtrarRegistrosPorLatitud(string cabeceras[], Metrobus registros[], double filtrarDesde, double filtrarHasta) {
 	int cantidadDeRegistrosValidos = 0;
+
+	cout << endl;
 
 	cout << "*************************************************" << endl << endl;
 
@@ -368,7 +383,7 @@ void filtrarRegistrosPorLatitud(string cabeceras[], Metrobus registros[], double
 		}
 	}
 
-	cout << ">>> La cantidad de registros que cumplen con lo pedido es de " << cantidadDeRegistrosValidos << "." << endl;
+	cout << ">>> La cantidad de registros que cumplen con lo pedido es de " << cantidadDeRegistrosValidos << "." << endl << endl;
 
 	cout << "*************************************************" << endl << endl;
 }
@@ -380,7 +395,9 @@ int obtenerIdParaFiltrado() {
 
 	do {
 
-		cout << "Ingrese el IDENTIFICADOR del metrobus buscado: " << endl;
+		cout << endl;
+
+		cout << "Ingrese el IDENTIFICADOR del metrobus buscado: ";
 
 		cin >> eleccion;
 
@@ -402,12 +419,14 @@ void filtrarRegistrosPorId(string cabeceras[], Metrobus registros[], int filtrar
 
 	int registroAnalizado = 1;
 
+	cout << endl;
+
 	cout << "*************************************************" << endl << endl;
 
-	while( !idEncontrado &&  (registroAnalizado <= CANTIDAD_METROBUSES) ) {
+	while( (!idEncontrado) &&  (registroAnalizado <= CANTIDAD_METROBUSES) ) {
 		Metrobus registroCandidato = registros[registroAnalizado-1];
 
-		bool idEncontrado = (registroCandidato.identificador == filtrarID);
+		idEncontrado = (registroCandidato.identificador == filtrarID);
 
 		if( idEncontrado ) {
 			mostrarDatosDelRegistro(registroCandidato);
@@ -424,6 +443,8 @@ void filtrarRegistrosPorId(string cabeceras[], Metrobus registros[], int filtrar
 }
 
 void terminarPrograma(){
+	cin.ignore(256, '\n'); // Se limpia el buffer para que la espera de la presion de la tecla ENTER funcione.
+
 	cout << endl;
 
 	cout << ".:::: PROGRAMA FINALIZADO ::::." << endl;
