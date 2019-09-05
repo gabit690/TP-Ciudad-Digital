@@ -116,6 +116,36 @@
 
 /*
  * PRE.: -.
+ * POST.: obtiene los valores a partir de los cuales se filtraran los registros por rango de latitud.
+ */
+	void elegirRangoDeFiltradoPorLatitud(double &filtrarDesde, double &filtrarHasta);
+
+/*
+ * PRE.: 'cabeceras[]' es un vector de tamanio determinado por el valor constante CANTIDAD_COLUMNAS.
+ * 'registros[]' es un vector de tamanio determinado por el valor constante CANTIDAD_METROBUSES
+ * y contiene la informacion del archivo de metrobuses procesado.
+ * 'filtrarDesde' y 'filtrarHasta' son decimales que estan en [LONGITUD_MINIMA_ACEPTADA, LONGITUD_MAXIMA_ACEPTADA].
+ * POST.: muestra la informacion de los registros cuya latitud esta en [LATITUD_MINIMA_ACEPTADA, LATITUD_MAXIMA_ACEPTADA].
+ */
+	void filtrarRegistrosPorLatitud(std::string cabeceras[], Metrobus registros[], double filtrarDesde, double filtrarHasta);
+
+/*
+ * PRE.: -.
+ * POST.: obtiene el id a partir del cual se filtraran los registros.
+ */
+	int obtenerIdParaFiltrado();
+
+/*
+ * PRE.: 'cabeceras[]' es un vector de tamanio determinado por el valor constante CANTIDAD_COLUMNAS.
+ * 'registros[]' es un vector de tamanio determinado por el valor constante CANTIDAD_METROBUSES
+ * y contiene la informacion del archivo de metrobuses procesado.
+ * 'filtrarID' es un valor mayor a 0.
+ * POST.: muestra (si existe) la informacion del registro cuyo identificador coincida con 'filtrarID'.
+ */
+	void filtrarRegistrosPorId(std::string cabeceras[], Metrobus registros[], int filtrarID);
+
+/*
+ * PRE.: -.
  * POST.: muestra un mensaje de finalizacion del programa al usuario.
  */
 	void terminarPrograma();
